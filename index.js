@@ -4,6 +4,7 @@ import './style.css';
 // Write Javascript code!
 var eventName;
 var originalPosition, lastKnownPosition;
+var startXPercent;
 const mobile = document.querySelector('#app');
 
 
@@ -25,17 +26,14 @@ mobile.addEventListener('touchmove', (event) => {
 })
 
 mobile.addEventListener('touchend', (event) => {
-  const xMove = (lastKnownPosition - originalPosition);
+  const xMove = (lastKnownPosition - originalPosition); // TODO: verify
   const width = mobile.offsetWidth;
   const height = mobile.offsetHeight;
 
   const computedStyle = getComputedStyle(mobile);
   let xPos = parseInt(computedStyle.backgroundPositionX.split('%')[0], 10);
-  const startXPercent = startXPercent ? startXPercent : 50;
-
-
+  startXPercent = startXPercent || startXPercent === 0 ? startXPercent : 50;
   const movePercentX = -(xMove / width) * 100;
-
 
   const bgX = (startXPercent + movePercentX);
   console.log(movePercentX + '%');
