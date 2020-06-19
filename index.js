@@ -25,15 +25,30 @@ mobile.addEventListener('touchmove', (event) => {
 })
 
 mobile.addEventListener('touchend', (event) => {
-   console.log('===========');
-    console.log(originalPosition);
-    console.log('to ');
-    console.log(lastKnownPosition);
-    console.log('===========');
-    console.log('===========');
-    originalPosition = null;
-    lastKnownPosition = null;
+  const xMove = (lastKnownPosition - originalPosition);
+  const width = mobile.offsetWidth;
+  const height = mobile.offsetHeight;
 
+  const computedStyle = getComputedStyle(mobile);
+  let xPos = parseInt(computedStyle.backgroundPositionX.split('%')[0], 10);
+  const startXPercent = startXPercent ? startXPercent : 50;
+
+
+  const movePercentX = -(xMove / width) * 100;
+
+
+  const bgX = (startXPercent + movePercentX);
+  console.log(movePercentX + '%');
+
+  if (bgX < 0) {
+    bgX = 0;
+  } else if (bgX > 100) {
+    bgX = 100;
+  }
+  mobile.style.backgroundPositionX = `${bgX}%`;
+  startXPercent = bgX;
+  originalPosition = null;
+  lastKnownPosition = null;
 });
 
 
