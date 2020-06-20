@@ -3,7 +3,7 @@ import './style.css';
 
 // Write Javascript code!
 var eventName;
-var originalPosition, lastKnownPosition, lastKnownPositionY, originalY;
+var originalX, lastKnownPosition, lastKnownPositionY, originalY;
 var startXPercent, startYPercent;
 const mobile = document.querySelector('#app');
 
@@ -14,9 +14,8 @@ mobile.addEventListener('touchstart', (event) => {
     eventName = 'zoom';
   } else {
     eventName = 'pan';
-    originalPosition = event.targetTouches[0].clientX;
+    originalX = event.targetTouches[0].clientX;
     originalY = event.targetTouches[0].clientY;
-    handlePan(event);
   }
 })
 
@@ -28,7 +27,7 @@ mobile.addEventListener('touchmove', (event) => {
 })
 
 mobile.addEventListener('touchend', (event) => {
-  const xMove = (lastKnownPosition - originalPosition);
+  const xMove = (lastKnownPosition - originalX);
   const yMove = (lastKnownPositionY - originalY);
   const width = mobile.offsetWidth;
   const height = mobile.offsetHeight;
@@ -44,7 +43,6 @@ mobile.addEventListener('touchend', (event) => {
 
   const bgX = (startXPercent + movePercentX);
   const bgY = (startYPercent + movePercentY);
-  console.log(movePercentX + '%');
 
   if (bgX < 0) {
     bgX = 0;
@@ -61,12 +59,7 @@ mobile.addEventListener('touchend', (event) => {
   mobile.style.backgroundPositionY = `${bgY}%`;
   startXPercent = bgX;
   startYPercent = bgY;
-  originalPosition = null;
+  originalX = null;
   lastKnownPosition = null;
   lastKnownPositionY = null;
 });
-
-
-function handlePan(event) {
-  console.log('handle pan');
-}
