@@ -7,7 +7,6 @@ var originalX, lastKnownPosition, lastKnownPositionY, originalY;
 var startXPercent, startYPercent;
 const mobile = document.querySelector('#app');
 
-
 mobile.addEventListener('touchstart', (event) => {
   console.log('touch start');
   if (event.touches.length === 2) {
@@ -26,50 +25,49 @@ mobile.addEventListener('touchmove', (event) => {
 
 
     const xMove = (lastKnownPosition - originalX);
-  const yMove = (lastKnownPositionY - originalY);
-  const width = mobile.offsetWidth;
-  const height = mobile.offsetHeight;
+    const yMove = (lastKnownPositionY - originalY);
+    const width = mobile.offsetWidth;
+    const height = mobile.offsetHeight;
 
-  const computedStyle = getComputedStyle(mobile);
-  let xPos = parseInt(computedStyle.backgroundPositionX.split('%')[0], 10);
-  startXPercent = startXPercent || startXPercent === 0 ? startXPercent : 50;
-  const movePercentX = -(xMove / width) * 100;
+    const computedStyle = getComputedStyle(mobile);
+    let xPos = parseInt(computedStyle.backgroundPositionX.split('%')[0], 10);
+    startXPercent = startXPercent || startXPercent === 0 ? startXPercent : 50;
+    const movePercentX = -(xMove / width) * 100;
 
-  let yPos = parseInt(computedStyle.backgroundPositionY.split('%')[1], 10);
-  startYPercent = startYPercent || startYPercent === 0 ? startYPercent : 50;
-  const movePercentY = -(yMove / height) * 100;
+    let yPos = parseInt(computedStyle.backgroundPositionY.split('%')[1], 10);
+    startYPercent = startYPercent || startYPercent === 0 ? startYPercent : 50;
+    const movePercentY = -(yMove / height) * 100;
 
-  let slowMove = 1; // Slow the x/y movements when zoomed in
-  if (computedStyle.backgroundSize.split('%')[0] > 100) {
-    slowMove = 10;
-    movePercentX = movePercentX / slowMove;
-    movePercentY = movePercentY / slowMove;
-  }
+    let slowMove = 1; // Slow the x/y movements when zoomed in
+    if (computedStyle.backgroundSize.split('%')[0] > 100) {
+      slowMove = 10;
+      movePercentX = movePercentX / slowMove;
+      movePercentY = movePercentY / slowMove;
+    }
 
-  const bgX = (startXPercent + movePercentX);
-  const bgY = (startYPercent + movePercentY);
+    const bgX = (startXPercent + movePercentX);
+    const bgY = (startYPercent + movePercentY);
 
-  if (bgX < 0) {
-    bgX = 0;
-  } else if (bgX > 100) {
-    bgX = 100;
-  }
+    if (bgX < 0) {
+      bgX = 0;
+    } else if (bgX > 100) {
+      bgX = 100;
+    }
 
-  if (bgY < 0) {
-    bgY = 0;
-  } else if (bgY > 100) {
-    bgY = 100;
-  }
-  mobile.style.backgroundPositionX = `${bgX}%`;
-  mobile.style.backgroundPositionY = `${bgY}%`;
-  startXPercent = bgX;
-  startYPercent = bgY;
+    if (bgY < 0) {
+      bgY = 0;
+    } else if (bgY > 100) {
+      bgY = 100;
+    }
+    mobile.style.backgroundPositionX = `${bgX}%`;
+    mobile.style.backgroundPositionY = `${bgY}%`;
+    startXPercent = bgX;
+    startYPercent = bgY;
   }
 })
 
 mobile.addEventListener('touchend', (event) => {
-  
-  
+  // Reset positions
   originalX = null;
   lastKnownPosition = null;
   lastKnownPositionY = null;
