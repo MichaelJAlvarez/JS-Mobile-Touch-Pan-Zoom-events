@@ -23,11 +23,9 @@ mobile.addEventListener('touchmove', (event) => {
   if (eventName === 'pan') {
     lastKnownPosition = event.targetTouches[0].clientX;
     lastKnownPositionY = event.targetTouches[0].clientY;
-  }
-})
 
-mobile.addEventListener('touchend', (event) => {
-  const xMove = (lastKnownPosition - originalX);
+
+    const xMove = (lastKnownPosition - originalX);
   const yMove = (lastKnownPositionY - originalY);
   const width = mobile.offsetWidth;
   const height = mobile.offsetHeight;
@@ -41,11 +39,11 @@ mobile.addEventListener('touchend', (event) => {
   startYPercent = startYPercent || startYPercent === 0 ? startYPercent : 50;
   const movePercentY = -(yMove / height) * 100;
 
-  let slowMove = 1;
-  if (computedStyle.backgroundSize.split('%')[0] > 200) {
-    slowMove = 2;
-    movePercentX = movePercentX / 2;
-    movePercentY = movePercentY / 2;
+  let slowMove = 1; // Slow the x/y movements when zoomed in
+  if (computedStyle.backgroundSize.split('%')[0] > 100) {
+    slowMove = 10;
+    movePercentX = movePercentX / slowMove;
+    movePercentY = movePercentY / slowMove;
   }
 
   const bgX = (startXPercent + movePercentX);
@@ -66,6 +64,12 @@ mobile.addEventListener('touchend', (event) => {
   mobile.style.backgroundPositionY = `${bgY}%`;
   startXPercent = bgX;
   startYPercent = bgY;
+  }
+})
+
+mobile.addEventListener('touchend', (event) => {
+  
+  
   originalX = null;
   lastKnownPosition = null;
   lastKnownPositionY = null;
