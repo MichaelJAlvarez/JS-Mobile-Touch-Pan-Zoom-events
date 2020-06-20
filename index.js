@@ -41,6 +41,13 @@ mobile.addEventListener('touchend', (event) => {
   startYPercent = startYPercent || startYPercent === 0 ? startYPercent : 50;
   const movePercentY = -(yMove / height) * 100;
 
+  let slowMove = 1;
+  if (computedStyle.backgroundSize.split('%')[0] > 200) {
+    slowMove = 2;
+    movePercentX = movePercentX / 2;
+    movePercentY = movePercentY / 2;
+  }
+
   const bgX = (startXPercent + movePercentX);
   const bgY = (startYPercent + movePercentY);
 
